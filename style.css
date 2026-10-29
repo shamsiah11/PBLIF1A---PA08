@@ -144,6 +144,23 @@ header h1 {
     color: var(--mu)
 }
 
+/* Tombol garis tiga (hamburger).
+   Default-nya disembunyikan, baru muncul di layar kecil (lihat bagian responsif) */
+.burger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: none;
+    border: 1px solid var(--ln);   /* bingkai tipis */
+    border-radius: 8px;
+    color: var(--tx);              /* warna garis mengikuti warna teks */
+    cursor: pointer
+}
+
+/* Tombol Keluar: berbingkai merah, terisi merah saat disorot */
 #usr button {
     color: var(--er);
     border-color: var(--er);
@@ -156,10 +173,13 @@ header h1 {
     color: #fff;
 }
 
+/* Nama pengguna (Admin / Mahasiswa) dibuat tebal */
 #uname {
     font-weight: 700;
     color: var(--tx);
 }
+
+
 /* =====================================================
    4. LAYOUT UTAMA: SIDEBAR + KONTEN
    ===================================================== */
@@ -579,24 +599,30 @@ body:not(.out) #login {
 
 /* =====================================================
    11. RESPONSIF (layar HP / sempit)
+   Berlaku saat lebar layar 720 px atau kurang.
    ===================================================== */
 
 @media(max-width:720px) {
-    /* sidebar pindah ke atas, menu berjajar ke samping */
+    /* sidebar dan konten disusun atas-bawah */
     .layout {
         flex-direction: column
     }
 
+    /* tampilkan tombol garis tiga */
+    .burger {
+        display: flex
+    }
+
+    /* menu disembunyikan sampai tombol ditekan */
     nav {
+        display: none;
         width: 100%;
-        display: flex;
-        overflow-x: auto;
         padding: 8px
     }
 
-    nav button {
-        width: auto;
-        white-space: nowrap
+    /* saat <body> punya class "nav-open", menu tampil sebagai daftar vertikal */
+    body.nav-open nav {
+        display: block
     }
 
     /* form jadi satu kolom */
@@ -604,6 +630,7 @@ body:not(.out) #login {
         grid-template-columns: 1fr
     }
 
+    /* jarak isi halaman dikecilkan agar muat di layar HP */
     main {
         padding: 16px
     }
@@ -637,6 +664,12 @@ body:not(.out) #login {
     }
 }
 
+
+/* =====================================================
+   13. PENYESUAIAN LOGO & LOGIN
+   ===================================================== */
+
+/* Logo bulat tanpa latar */
 .logo {
     width: 44px;
     height: 44px;
@@ -649,6 +682,7 @@ body:not(.out) #login {
     font-weight: 700
 }
 
+/* Gambar logo memenuhi lingkaran */
 .logo img {
     width: 100%;
     height: 100%;
@@ -656,23 +690,26 @@ body:not(.out) #login {
     padding: 0;
 }
 
+/* Judul dan teks di kartu login rata tengah */
 #login .card {
     text-align: center
 }
 
+/* Label, isian, dan checkbox tetap rata kiri */
 #login label,
 #login .chk,
 #login input {
     text-align: left
 }
 
+/* Logo login lebih besar dan di tengah */
 #login .logo {
     width: 72px;
     height: 72px;
     margin: 0 auto 14px
 }
 
-/* sembunyikan ikon mata bawaan Edge */
+/* Sembunyikan ikon mata bawaan Edge */
 input::-ms-reveal,
 input::-ms-clear {
     display: none

@@ -9,13 +9,22 @@
 </head>
 <body>
 <header>
+  <!-- Tombol garis tiga (hamburger). Hanya tampil di layar kecil-->
+<button class="burger" aria-label="Buka menu" aria-expanded="false"
+  onclick="const o=document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',o)">
+  <!-- Ikon tiga garis, digambar dengan SVG supaya tidak butuh file gambar -->
+  <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+    <path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+  </svg>
+</button>
   <div class="logo"><img src="Agendom (1).png" alt="logo"></div>
   <h1>Agendom</h1>
   <input id="q" type="search" placeholder="Pencarian…" aria-label="Pencarian">
   <div id="usr"><span id="uname"></span><button class="b" onclick="logout()">Keluar</button></div>
 </header>
 <div class="layout">
-  <nav id="nav"></nav>
+  <!-- Menu sidebar. Kalau salah satu menu diklik, class "nav-open" dilepas sehingga menu menutup lagi -->
+<nav id="nav" onclick="document.body.classList.remove('nav-open')"></nav>
   <main id="main"></main>
 </div>
 <section id="login" aria-label="Masuk">

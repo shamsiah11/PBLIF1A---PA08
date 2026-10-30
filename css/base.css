@@ -1,0 +1,37 @@
+/* base.css: pengaturan dasar untuk seluruh halaman. */
+
+html {
+    scroll-padding-top: env(safe-area-inset-top, 0px)
+}
+
+/* padding dan border dihitung masuk ke lebar elemen */
+* {
+    box-sizing: border-box
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--tx);
+    font: 15px/1.5 "Plus Jakarta Sans", system-ui, sans-serif
+}
+
+/* Judul halaman (Dashboard, Kegiatan, dst.) */
+h2 {
+    font-size: 22px;
+    margin: 0 0 18px
+}
+
+/* Label di atas kolom isian form */
+label {
+    display: block;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 4px
+}
+
+/* Garis biru saat elemen dipilih dengan keyboard (Tab) */
+:focus-visible {
+    outline: 2px solid var(--ac);
+    outline-offset: 2px
+}

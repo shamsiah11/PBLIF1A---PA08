@@ -1,0 +1,167 @@
+/* components.css: komponen umum (input, kartu, tombol, toast, tabel, label status). */
+
+/* --- Kolom isian (input, dropdown, textarea) --- */
+input,
+select,
+textarea {
+    font: inherit;
+    color: var(--tx);
+    background: var(--sf);
+    border: 1px solid var(--ln);
+    border-radius: 8px;
+    padding: 8px 10px;
+    width: 100%
+}
+
+/* --- Kartu (kotak putih berbingkai) --- */
+.card {
+    background: var(--sf);
+    border: 1px solid var(--ln);
+    border-radius: 12px;
+    padding: 16px
+}
+
+/* --- Baris judul + tombol, sejajar kiri-kanan --- */
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px
+}
+
+.row h3 {
+    margin: 0;
+    font-size: 16px
+}
+
+/* Teks abu-abu kecil */
+.mu {
+    color: var(--mu);
+    font-size: 13px
+}
+
+/* Pesan kosong, misalnya "Belum ada peserta" */
+.empty {
+    padding: 28px;
+    text-align: center;
+    color: var(--mu)
+}
+
+/* --- Tombol --- */
+
+/* Tombol biasa (Batal, Lihat semua, dll.) */
+button.b {
+    font: inherit;
+    border: 1px solid var(--ln);
+    background: var(--sf);
+    color: var(--tx);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer
+}
+
+/* Tombol utama berwarna aksen (Simpan, Tambah) */
+button.p {
+    background: var(--ac);
+    border-color: var(--ac);
+    color: #fff;
+    font-weight: 700
+}
+
+/* Di tema gelap aksen jadi terang, jadi teks tombol dibuat gelap */
+:root[data-theme="dark"] button.p {
+    color: #0f1523
+}
+
+@media(prefers-color-scheme:dark) {
+    :root:not([data-theme="light"]) button.p {
+        color: #0f1523
+    }
+}
+
+/* Tautan berbentuk teks (Edit | Hapus, Ubah | Hapus) */
+.lk {
+    background: none;
+    border: 0;
+    color: var(--ac);
+    cursor: pointer;
+    font: inherit;
+    padding: 0
+}
+
+/* Tautan berbahaya, merah (Hapus) */
+.lk.d {
+    color: var(--er)
+}
+
+/* Toast: pesan kecil yang muncul sebentar di bawah layar */
+#toast {
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--tx);
+    color: var(--bg);
+    padding: 10px 18px;
+    border-radius: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s
+}
+
+/* Kelas "s" ditambahkan lewat JS supaya toast terlihat */
+#toast.s {
+    opacity: 1
+}
+
+
+/* Pembungkus tabel supaya bisa digeser ke samping di HP */
+.tw {
+    overflow-x: auto
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px
+}
+
+th,
+td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--ln)
+}
+
+/* Judul kolom */
+th {
+    font-size: 13px;
+    color: var(--mu);
+    font-weight: 700
+}
+
+/* Label status berbentuk pil (Direncanakan, Selesai, dst.) */
+.tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--ac2);
+    color: var(--ac)
+}
+
+/* Warna teks label tergantung statusnya */
+.tag.Selesai {
+    color: var(--ok)
+}
+
+.tag.Batal {
+    color: var(--er)
+}
+
+.tag.Berlangsung {
+    color: var(--wa)
+}

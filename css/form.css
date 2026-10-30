@@ -1,0 +1,35 @@
+/* form.css: isian form Kegiatan dan Anggota, tombol Batal/Simpan, dan checkbox. */
+
+/* Isian form dibagi dua kolom */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 20px
+}
+
+/* Isian yang melebar penuh, misalnya Deskripsi */
+.grid .full {
+    grid-column: 1/-1
+}
+
+/* Baris tombol Batal / Simpan di kanan bawah form */
+.act {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px
+}
+
+/* Checkbox + teks, dipakai di daftar "Pilih anggota"
+   dan "Ingat saya" di halaman login */
+.chk {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    font-weight: 400
+}
+
+.chk input {
+    width: auto
+}

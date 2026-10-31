@@ -28,11 +28,66 @@ function kegiatan() {
    <input type="month" aria-label="Bulan" value="${F.bulan}" onchange="F.bulan=this.value;page=1;kegiatan()">
    <select aria-label="PIC" onchange="F.pic=this.value;page=1;kegiatan()">${opts(pics, F.pic, "PIC")}</select></div>
   <div class="card tw" style="padding:0">${rows.length ? `<table><tr><th>Nama kegiatan</th><th>Kategori</th><th>Tanggal</th><th>Lokasi</th><th>PIC</th><th>Status</th>${isAdmin() ? "<th>Aksi</th>" : ""}</tr>
-  ${rows.map(x => `<tr><td>${esc(x.nama)}</td><td>${esc(x.kategori)}</td><td>${tgl(x.tanggal)}</td><td>${esc(x.lokasi)}</td><td>${esc(x.pic)}</td><td><span class="tag ${x.status}">${x.status}</span></td>
+${rows.map(x => `<tr>
+<td>
+    <button class="nama-kegiatan" onclick="detailKegiatan(${x.id})">
+        ${esc(x.nama)}
+    </button>
+</td>
+<td>${esc(x.kategori)}</td>
+<td>${tgl(x.tanggal)}</td>
+<td>${esc(x.lokasi)}</td>
+<td>${esc(x.pic)}</td>
+<td><span class="tag ${x.status}">${esc(x.status)}</span></td>
   ${isAdmin() ? `<td><button class="lk" onclick="go('form',${x.id})">Edit</button> | <button class="lk d" onclick="hapus(${x.id})">Hapus</button></td>` : ""}</tr>`).join("")}</table>` : `<div class="empty">Tidak ada kegiatan yang cocok. Ubah filter untuk melihat kegiatan lain.</div>`}</div>
   <div class="pg"><button class="b" ${page < 2 ? "disabled" : ""} onclick="page--;kegiatan()">&lt;</button>
   ${Array.from({ length: pages }, (_, i) => `<button class="b ${i + 1 === page ? "on" : ""}" onclick="page=${i + 1};kegiatan()">${i + 1}</button>`).join("")}
   <button class="b" ${page >= pages ? "disabled" : ""} onclick="page++;kegiatan()">&gt;</button></div>`;
+}
+function detailKegiatan(id) {
+    const x = data.find(d => d.id === id);
+    if (!x) return;
+
+    document.body.insertAdjacentHTML("beforeend", `
+        <div class="detail-overlay" id="detailModal"
+             onclick="if(event.target === this) tutupDetail()">
+
+            <div class="detail-box">
+                <div class="detail-header">
+                    <h2>Detail Kegiatan</h2>
+                    <button onclick="tutupDetail()">×</button>
+                </div>
+
+                <h3>${esc(x.nama)}</h3>
+
+                <div class="detail-status">
+                    <span class="tag ${x.status}">
+                        ${esc(x.status)}
+                    </span>
+                </div>
+
+                <h4>Deskripsi Kegiatan</h4>
+                <p>${esc(x.deskripsi || "Belum ada deskripsi kegiatan.")}</p>
+
+                <h4>Informasi Kegiatan</h4>
+                <div class="detail-info">
+                    <p><b>Kategori:</b> ${esc(x.kategori)}</p>
+                    <p><b>Tanggal:</b> ${tgl(x.tanggal)}</p>
+                    <p><b>Lokasi:</b> ${esc(x.lokasi)}</p>
+                    <p><b>PIC:</b> ${esc(x.pic)}</p>
+                    <p><b>Jumlah Peserta:</b> ${x.peserta}</p>
+                </div>
+
+                <button class="b p" onclick="tutupDetail()">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    `);
+}
+
+function tutupDetail() {
+    document.getElementById("detailModal")?.remove();
 }
 function form() {
   const x = data.find(d => d.id === editId) || { nama: "", kategori: "Rapat", tanggal: today(), lokasi: "", status: "Direncanakan", pic: "", peserta: 0, deskripsi: "" };

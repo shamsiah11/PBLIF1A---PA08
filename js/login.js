@@ -8,10 +8,63 @@ const USERS = [
   { u: "user", p: "user123", n: "Mahasiswa", r: "user" }
 ];
 function sesi() { try { return localStorage.getItem("agenda_sesi") || sessionStorage.getItem("agenda_sesi") } catch (e) { return null } }
-function masuk(a) { ROLE = a.r; document.body.classList.remove("out"); $("#uname").textContent = a.r === "user" ? "Mahasiswa" : a.n; go("dashboard") } function logout() {
-  try { localStorage.removeItem("agenda_sesi"); sessionStorage.removeItem("agenda_sesi") } catch (e) { }
-  ROLE = "admin"; document.body.classList.add("out"); $("#lf").reset(); $("#lerr").textContent = ""; $("#lu").focus()
+// ===== Auto Logout setelah 30 menit tidak aktif =====
+const BATAS_WAKTU = 30 * 60 * 1000; // 30 menit
+let timerLogout;
+
+function mulaiTimer() {
+  clearTimeout(timerLogout);
+
+  timerLogout = setTimeout(() => {
+    logout(true);
+  }, BATAS_WAKTU);
 }
+
+function resetTimer() {
+  if (!document.body.classList.contains("out")) {
+    mulaiTimer();
+  }
+}
+
+// ===== Login dan Logout =====
+function masuk(a) {
+  ROLE = a.r;
+  document.body.classList.remove("out");
+
+  $("#uname").textContent =
+    a.r === "user" ? "Mahasiswa" : a.n;
+
+  mulaiTimer();
+  go("dashboard");
+}
+
+function logout(otomatis = false) {
+  clearTimeout(timerLogout);
+
+  try {
+    localStorage.removeItem("agenda_sesi");
+    sessionStorage.removeItem("agenda_sesi");
+  } catch (e) {}
+
+  ROLE = "admin";
+  document.body.classList.add("out");
+  $("#lf").reset();
+
+  if (otomatis) {
+    $("#lerr").textContent =
+      "Sesi Anda telah berakhir karena tidak ada aktivitas selama 30 menit. Silakan login kembali.";
+  } else {
+    $("#lerr").textContent = "";
+  }
+
+  $("#lu").focus();
+}
+
+// Deteksi aktivitas pengguna
+["mousemove", "mousedown", "keydown", "click",
+ "scroll", "touchstart"].forEach(event => {
+  document.addEventListener(event, resetTimer);
+});
 if ($("#tp")) $("#tp").onclick = () => { const p = $("#lp"), s = p.type === "password"; p.type = s ? "text" : "password"; $("#tp").textContent = s ? "Sembunyikan" : "Tampilkan" };
 $("#lf").addEventListener("submit", e => {
   e.preventDefault();

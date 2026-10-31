@@ -165,3 +165,38 @@ th {
 .tag.Berlangsung {
     color: var(--wa)
 }
+
+.export-menu {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.export-options {
+    position: absolute;
+    top: 100%;
+    right: 65px;
+    margin-top: 5px;
+    background: var(--bg);
+    border: 1px solid var(--bd);
+    border-radius: 8px;
+    padding: 6px;
+    min-width: 140px;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+
+.export-options button {
+    display: block;
+    width: 100%;
+    padding: 9px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.export-options button:hover {
+    background: var(--sf);
+}

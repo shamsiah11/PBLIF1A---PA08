@@ -21,7 +21,15 @@ function filtered() {
 function kegiatan() {
   const L = filtered(), per = 5, pages = Math.max(1, Math.ceil(L.length / per)); page = Math.min(page, pages);
   const rows = L.slice((page - 1) * per, page * per), pics = [...new Set(data.map(x => x.pic))];
-  $("#main").innerHTML = `<div class="row"><h2 style="margin:0">Data Kegiatan</h2>${isAdmin() ? `<button class="b p" onclick="go('form')">Tambah kegiatan</button>` : ""}</div>
+$("#main").innerHTML = `<div class="row">
+  <h2 style="margin:0">Data Kegiatan</h2>
+  ${isAdmin() ? `
+    <div class="act">
+      <button class="b" onclick="kelolaKategori()">Kelola Kategori</button>
+      <button class="b p" onclick="go('form')">Tambah Kegiatan</button>
+    </div>
+  ` : ""}
+</div>
   <div class="filters" style="margin-bottom:12px">
    <select aria-label="Kategori" onchange="F.kategori=this.value;page=1;kegiatan()">${opts(katAll(), F.kategori, "Kategori")}</select>
    <select aria-label="Status" onchange="F.status=this.value;page=1;kegiatan()">${opts(STS, F.status, "Status")}</select>
@@ -94,7 +102,7 @@ function form() {
   $("#main").innerHTML = `<h2>${editId ? "Edit" : "Tambah"} kegiatan</h2>
   <div class="card"><div class="grid" id="f">
    <div><label for="nama">Nama kegiatan</label><input id="nama" value="${esc(x.nama)}"></div>
-      <div><label for="kategori">Kategori</label><select id="kategori" onchange="$('#kbaru').hidden=this.value!=='__baru'">${opts(katAll(), x.kategori)}<option value="__baru">+ Tambah kategori baru…</option></select>
+      <div><label for="kategori">Kategori</label><select id="kategori" onchange="$('#kbaru').hidden=this.value!=='__baru'">${opts(katAll(), x.kategori)}${!editId ? '<option value="__baru">+ Tambah kategori baru…</option>' : ''}</select>
        <input id="kbaru" hidden placeholder="Nama kategori baru" style="margin-top:8px"></div>
    <div><label for="tanggal">Tanggal</label><input id="tanggal" type="date" value="${x.tanggal}"></div>
    <div><label for="lokasi">Lokasi</label><input id="lokasi" value="${esc(x.lokasi)}"></div>
@@ -123,3 +131,148 @@ function hapus(id) {
   if (confirm(`Hapus kegiatan “${x.nama}”?`)) { data = data.filter(d => d.id !== id); delete hadir[id]; saveH(); save(); toast("Kegiatan dihapus"); kegiatan() }
 }
 $("#q").addEventListener("input", e => { Q = e.target.value; if (view !== "kegiatan") { view = "kegiatan"; render() } page = 1; kegiatan(); });
+
+// Menampilkan daftar kategori
+function kelolaKategori() {
+  if (!isAdmin()) return;
+
+  const daftar = katAll();
+
+  $("#main").innerHTML = `
+    <div class="row">
+      <h2 style="margin:0">Kelola Kategori</h2>
+      <button class="b p" onclick="tambahKategori()">
+        + Tambah Kategori
+      </button>
+    </div>
+
+    <div class="card tw" style="padding:0">
+      <table>
+        <tr>
+          <th>No</th>
+          <th>Nama Kategori</th>
+          <th>Aksi</th>
+        </tr>
+
+        ${daftar.map((nama, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${esc(nama)}</td>
+            <td>
+              <button class="lk" onclick="editKategori('${encodeURIComponent(nama)}')">
+                Edit
+              </button>
+              |
+              <button class="lk d" onclick="hapusKategori('${encodeURIComponent(nama)}')">
+                Hapus
+              </button>
+            </td>
+          </tr>
+        `).join("")}
+      </table>
+    </div>
+
+    <div class="act" style="margin-top:12px">
+      <button class="b" onclick="kegiatan()">Kembali</button>
+    </div>
+  `;
+}
+
+
+// Tambah kategori
+function tambahKategori() {
+  if (!isAdmin()) return;
+
+  const nama = prompt("Masukkan nama kategori baru:");
+
+  if (nama === null) return;
+
+  const baru = nama.trim();
+
+  if (!baru) {
+    alert("Nama kategori tidak boleh kosong.");
+    return;
+  }
+
+  if (katAll().some(k => k.toLowerCase() === baru.toLowerCase())) {
+    alert("Kategori sudah tersedia.");
+    return;
+  }
+
+  KAT.push(baru);
+  saveKat();
+
+  toast("Kategori berhasil ditambahkan");
+  kelolaKategori();
+}
+
+
+// Edit kategori
+function editKategori(namaLama) {
+  if (!isAdmin()) return;
+
+  namaLama = decodeURIComponent(namaLama);
+
+  const namaBaru = prompt("Ubah nama kategori:", namaLama);
+
+  if (namaBaru === null) return;
+
+  const baru = namaBaru.trim();
+
+  if (!baru) {
+    alert("Nama kategori tidak boleh kosong.");
+    return;
+  }
+
+  if (katAll().some(k =>
+    k.toLowerCase() === baru.toLowerCase() &&
+    k !== namaLama
+  )) {
+    alert("Nama kategori sudah digunakan.");
+    return;
+  }
+
+  // Memperbarui daftar kategori
+  KAT = katAll().map(k =>
+    k === namaLama ? baru : k
+  );
+
+  // Memperbarui kategori 
+  data.forEach(k => {
+    if (k.kategori === namaLama) {
+      k.kategori = baru;
+    }
+  });
+
+  saveKat();
+  save();
+
+  toast("Kategori berhasil diperbarui");
+  kelolaKategori();
+}
+
+
+// Hapus kategori
+function hapusKategori(nama) {
+  if (!isAdmin()) return;
+
+  nama = decodeURIComponent(nama);
+
+  // Cek kategori 
+  const digunakan = data.some(k => k.kategori === nama);
+
+  if (digunakan) {
+    alert("Kategori tidak dapat dihapus karena masih digunakan oleh kegiatan.");
+    return;
+  }
+
+  if (!confirm(`Yakin ingin menghapus kategori "${nama}"?`)) {
+    return;
+  }
+
+  KAT = KAT.filter(k => k !== nama);
+  saveKat();
+
+  toast("Kategori berhasil dihapus");
+  kelolaKategori();
+}

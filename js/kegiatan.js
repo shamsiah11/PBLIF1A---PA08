@@ -117,7 +117,12 @@ function form() {
 function simpan() {
   const v = k => $("#" + k).value.trim();
  const o = { nama: v("nama"), kategori: v("kategori"), tanggal: v("tanggal"), jamMulai: v("jamMulai"), jamSelesai: v("jamSelesai"), lokasi: v("lokasi"), status: v("status"), pic: v("pic"), peserta: +v("peserta") || 0, deskripsi: v("deskripsi") };
-  if (o.kategori === "__baru") {
+ // Validasi waktu
+if (o.jamMulai && o.jamSelesai && o.jamSelesai <= o.jamMulai) {
+  alert("Jam selesai harus lebih besar dari jam mulai.");
+  return;
+} 
+ if (o.kategori === "__baru") {
     const nk = v("kbaru");
     if (!nk) { $("#err").textContent = "Isi nama kategori baru, atau pilih kategori yang sudah ada."; return }
     const ada = katAll().find(k => k.toLowerCase() === nk.toLowerCase());

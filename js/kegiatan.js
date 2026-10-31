@@ -35,7 +35,7 @@ $("#main").innerHTML = `<div class="row">
    <select aria-label="Status" onchange="F.status=this.value;page=1;kegiatan()">${opts(STS, F.status, "Status")}</select>
    <input type="month" aria-label="Bulan" value="${F.bulan}" onchange="F.bulan=this.value;page=1;kegiatan()">
    <select aria-label="PIC" onchange="F.pic=this.value;page=1;kegiatan()">${opts(pics, F.pic, "PIC")}</select></div>
-  <div class="card tw" style="padding:0">${rows.length ? `<table><tr><th>Nama kegiatan</th><th>Kategori</th><th>Tanggal</th><th>Lokasi</th><th>PIC</th><th>Status</th>${isAdmin() ? "<th>Aksi</th>" : ""}</tr>
+  <div class="card tw" style="padding:0">${rows.length ? `<table><tr><th>Nama kegiatan</th><th>Kategori</th><th>Tanggal</th><th>Waktu</th><th>Lokasi</th><th>PIC</th><th>Status</th>${isAdmin() ? "<th>Aksi</th>" : ""}</tr>
 ${rows.map(x => `<tr>
 <td>
     <button class="nama-kegiatan" onclick="detailKegiatan(${x.id})">
@@ -43,8 +43,7 @@ ${rows.map(x => `<tr>
     </button>
 </td>
 <td>${esc(x.kategori)}</td>
-<td>${tgl(x.tanggal)}</td>
-<td>${esc(x.lokasi)}</td>
+<td>${tgl(x.tanggal)}</td><td>${x.jamMulai || '-'} - ${x.jamSelesai || '-'}</td><td>${esc(x.lokasi)}</td>
 <td>${esc(x.pic)}</td>
 <td><span class="tag ${x.status}">${esc(x.status)}</span></td>
   ${isAdmin() ? `<td><button class="lk" onclick="go('form',${x.id})">Edit</button> | <button class="lk d" onclick="hapus(${x.id})">Hapus</button></td>` : ""}</tr>`).join("")}</table>` : `<div class="empty">Tidak ada kegiatan yang cocok. Ubah filter untuk melihat kegiatan lain.</div>`}</div>
@@ -105,6 +104,8 @@ function form() {
       <div><label for="kategori">Kategori</label><select id="kategori" onchange="$('#kbaru').hidden=this.value!=='__baru'">${opts(katAll(), x.kategori)}${!editId ? '<option value="__baru">+ Tambah kategori baru…</option>' : ''}</select>
        <input id="kbaru" hidden placeholder="Nama kategori baru" style="margin-top:8px"></div>
    <div><label for="tanggal">Tanggal</label><input id="tanggal" type="date" value="${x.tanggal}"></div>
+<input id="jamMulai" type="time" step="60" value="${x.jamMulai || ''}">
+<input id="jamSelesai" type="time" step="60" value="${x.jamSelesai || ''}">
    <div><label for="lokasi">Lokasi</label><input id="lokasi" value="${esc(x.lokasi)}"></div>
    <div><label for="status">Status</label><select id="status">${opts(STS, x.status)}</select></div>
    <div><label for="pic">PIC</label><input id="pic" value="${esc(x.pic)}"></div>
@@ -115,7 +116,7 @@ function form() {
 }
 function simpan() {
   const v = k => $("#" + k).value.trim();
-  const o = { nama: v("nama"), kategori: v("kategori"), tanggal: v("tanggal"), lokasi: v("lokasi"), status: v("status"), pic: v("pic"), peserta: +v("peserta") || 0, deskripsi: v("deskripsi") };
+ const o = { nama: v("nama"), kategori: v("kategori"), tanggal: v("tanggal"), jamMulai: v("jamMulai"), jamSelesai: v("jamSelesai"), lokasi: v("lokasi"), status: v("status"), pic: v("pic"), peserta: +v("peserta") || 0, deskripsi: v("deskripsi") };
   if (o.kategori === "__baru") {
     const nk = v("kbaru");
     if (!nk) { $("#err").textContent = "Isi nama kategori baru, atau pilih kategori yang sudah ada."; return }

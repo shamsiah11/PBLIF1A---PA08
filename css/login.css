@@ -1,4 +1,4 @@
-/* login.css: halaman login. */
+/* Login */
 
 #login {
     position: fixed;
@@ -15,10 +15,10 @@
     width: 100%;
     max-width: 400px;
     padding: 28px;
-    text-align: center      /* judul dan teks di kartu login rata tengah */
+    text-align: center      /* rata tengah */
 }
 
-/* Logo login lebih besar dan di tengah */
+/* Logo login */
 #login .logo {
     width: 72px;
     height: 72px;
@@ -33,7 +33,7 @@
     margin-top: 14px
 }
 
-/* Kolom kata sandi + tombol Tampilkan/Sembunyikan di dalamnya */
+/* Kata sandi */
 .pw {
     position: relative
 }
@@ -56,7 +56,7 @@
     padding: 6px
 }
 
-/* Pesan error login (misalnya kata sandi salah) */
+/* Pesan error */
 #lerr {
     color: var(--er);
     font-size: 13px;
@@ -64,7 +64,7 @@
     margin-top: 10px
 }
 
-/* Petunjuk akun contoh di bawah form login */
+/* Akun contoh */
 #login .hint {
     margin-top: 16px;
     font-size: 13px;
@@ -73,25 +73,25 @@
     padding-top: 12px
 }
 
-/* Saat belum login (body.out), sembunyikan header dan aplikasi */
+/* Belum login */
 body.out header,
 body.out .layout {
     display: none
 }
 
-/* Setelah login, sembunyikan halaman login */
+/* Sudah login */
 body:not(.out) #login {
     display: none
 }
 
-/* Label, isian, dan checkbox tetap rata kiri */
+/* Rata kiri */
 #login label,
 #login .chk,
 #login input {
     text-align: left
 }
 
-/* Sembunyikan ikon mata bawaan Edge */
+/* Ikon mata Edge */
 input::-ms-reveal,
 input::-ms-clear {
     display: none

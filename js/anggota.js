@@ -1,4 +1,4 @@
-// anggota.js: data dan halaman Anggota (daftar, cari, tambah, edit, hapus).
+// Anggota
 
 const JAB = ["Ketua", "Wakil Ketua", "Sekretaris", "Bendahara", "Anggota"];
 const SEEDA = [{ id: 1, nama: "Abas Pratomo", nim: "33xxxxx01", jabatan: "Ketua", hp: "08111111111" }, { id: 2, nama: "Budi Santoso", nim: "33xxxxx02", jabatan: "Sekretaris", hp: "08222222222" }, { id: 3, nama: "Cici Lestari", nim: "33xxxxx03", jabatan: "Anggota", hp: "08333333333" }, { id: 4, nama: "Dedi Kurnia", nim: "33xxxxx04", jabatan: "Bendahara", hp: "" }];

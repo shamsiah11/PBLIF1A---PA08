@@ -1,14 +1,14 @@
-// login.js: akun contoh, proses masuk/keluar, dan pengecekan sesi saat halaman dibuka.
-// File ini harus dimuat PALING TERAKHIR karena di bagian bawahnya aplikasi langsung dijalankan.
+// Login
+// Dimuat terakhir
 
-// ===== Login (demo, hanya di sisi browser) =====
+// Akun contoh
 const USERS = [
   { u: "admin", p: "admin123", n: "Admin", r: "admin" },
   { u: "bem", p: "bem2026", n: "BEM", r: "admin" },
   { u: "user", p: "user123", n: "Mahasiswa", r: "user" }
 ];
 function sesi() { try { return localStorage.getItem("agenda_sesi") || sessionStorage.getItem("agenda_sesi") } catch (e) { return null } }
-// ===== Auto Logout setelah 30 menit tidak aktif =====
+// Auto logout
 const BATAS_WAKTU = 30 * 60 * 1000; // 30 menit
 let timerLogout;
 
@@ -26,7 +26,7 @@ function resetTimer() {
   }
 }
 
-// ===== Login dan Logout =====
+// Login dan Logout
 function masuk(a) {
   ROLE = a.r;
   document.body.classList.remove("out");

@@ -1,4 +1,4 @@
-/* layout.css: header (atas), sidebar, dan area konten. */
+/* Layout */
 
 header {
     display: flex;
@@ -10,7 +10,7 @@ header {
     flex-wrap: wrap
 }
 
-/* Kotak logo bulat tanpa latar (dipakai juga di halaman login) */
+/* Logo */
 .logo {
     width: 44px;
     height: 44px;
@@ -24,7 +24,7 @@ header {
     font-weight: 700
 }
 
-/* Gambar logo memenuhi lingkaran */
+/* Gambar logo */
 .logo img {
     width: 100%;
     height: 100%;
@@ -39,12 +39,12 @@ header h1 {
     min-width: 200px
 }
 
-/* Kolom pencarian di header */
+/* Pencarian */
 #q {
     max-width: 240px
 }
 
-/* Nama pengguna + tombol Keluar di header */
+/* Pengguna */
 #usr {
     display: flex;
     align-items: center;
@@ -53,8 +53,7 @@ header h1 {
     color: var(--mu)
 }
 
-/* Tombol garis tiga (hamburger).
-   Default-nya disembunyikan, baru muncul di layar kecil (lihat bagian responsif) */
+/* Hamburger */
 .burger {
     display: none;
     align-items: center;
@@ -63,13 +62,13 @@ header h1 {
     height: 40px;
     padding: 0;
     background: none;
-    border: 1px solid var(--ln);   /* bingkai tipis */
+    border: 1px solid var(--ln);   /* bingkai */
     border-radius: 8px;
-    color: var(--tx);              /* warna garis mengikuti warna teks */
+    color: var(--tx);              /* warna garis */
     cursor: pointer
 }
 
-/* Tombol Keluar: berbingkai merah, terisi merah saat disorot */
+/* Tombol Keluar */
 #usr button {
     color: var(--er);
     border-color: var(--er);
@@ -82,19 +81,19 @@ header h1 {
     color: #fff;
 }
 
-/* Nama pengguna (Admin / Mahasiswa) dibuat tebal */
+/* Nama pengguna */
 #uname {
     font-weight: 700;
     color: var(--tx);
 }
 
-/* Pembungkus sidebar dan konten, sejajar ke samping */
+/* Pembungkus */
 .layout {
     display: flex;
     min-height: calc(100vh - 69px)
 }
 
-/* Sidebar menu di kiri */
+/* Sidebar */
 nav {
     width: 200px;
     background: var(--sb);
@@ -102,7 +101,7 @@ nav {
     flex-shrink: 0
 }
 
-/* Tombol menu di dalam sidebar */
+/* Menu */
 nav button {
     display: block;
     width: 100%;
@@ -117,7 +116,7 @@ nav button {
     margin-bottom: 2px
 }
 
-/* Menu yang sedang aktif */
+/* Menu aktif */
 nav button.on {
     background: rgba(255, 255, 255, .14);
     color: #fff;
@@ -128,7 +127,7 @@ nav button:hover {
     background: rgba(255, 255, 255, .08)
 }
 
-/* Area isi halaman di sebelah kanan sidebar */
+/* Konten */
 main {
     flex: 1;
     padding: 24px;

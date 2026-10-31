@@ -1,4 +1,4 @@
-// peserta.js: data kehadiran dan halaman Peserta (tambah peserta, ubah status kehadiran).
+// Peserta
 
 const HDR = ["Hadir", "Izin", "Alpa"];
 const SEEDH = { 2: { 1: "Hadir", 2: "Izin", 3: "Alpa" } };

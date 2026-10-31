@@ -1,4 +1,4 @@
-// laporan.js: halaman Laporan (rekap kehadiran per kegiatan dan tombol Cetak).
+// Laporan
 
 function laporan() {
   const L = [...data].sort((a, b) => a.tanggal.localeCompare(b.tanggal)), T = k => Object.values(hadir[k] || {});

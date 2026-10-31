@@ -1,6 +1,6 @@
-/* components.css: komponen umum (input, kartu, tombol, toast, tabel, label status). */
+/* Komponen */
 
-/* --- Kolom isian (input, dropdown, textarea) --- */
+/* Input */
 input,
 select,
 textarea {
@@ -13,7 +13,7 @@ textarea {
     width: 100%
 }
 
-/* --- Kartu (kotak putih berbingkai) --- */
+/* Kartu */
 .card {
     background: var(--sf);
     border: 1px solid var(--ln);
@@ -21,7 +21,7 @@ textarea {
     padding: 16px
 }
 
-/* --- Baris judul + tombol, sejajar kiri-kanan --- */
+/* Baris judul */
 .row {
     display: flex;
     align-items: center;
@@ -36,22 +36,22 @@ textarea {
     font-size: 16px
 }
 
-/* Teks abu-abu kecil */
+/* Teks kecil */
 .mu {
     color: var(--mu);
     font-size: 13px
 }
 
-/* Pesan kosong, misalnya "Belum ada peserta" */
+/* Pesan kosong */
 .empty {
     padding: 28px;
     text-align: center;
     color: var(--mu)
 }
 
-/* --- Tombol --- */
+/* Tombol */
 
-/* Tombol biasa (Batal, Lihat semua, dll.) */
+/* Tombol biasa */
 button.b {
     font: inherit;
     border: 1px solid var(--ln);
@@ -62,7 +62,7 @@ button.b {
     cursor: pointer
 }
 
-/* Tombol utama berwarna aksen (Simpan, Tambah) */
+/* Tombol utama */
 button.p {
     background: var(--ac);
     border-color: var(--ac);
@@ -70,7 +70,7 @@ button.p {
     font-weight: 700
 }
 
-/* Di tema gelap aksen jadi terang, jadi teks tombol dibuat gelap */
+/* Tombol utama (gelap) */
 :root[data-theme="dark"] button.p {
     color: #0f1523
 }
@@ -81,7 +81,7 @@ button.p {
     }
 }
 
-/* Tautan berbentuk teks (Edit | Hapus, Ubah | Hapus) */
+/* Tautan */
 .lk {
     background: none;
     border: 0;
@@ -91,12 +91,12 @@ button.p {
     padding: 0
 }
 
-/* Tautan berbahaya, merah (Hapus) */
+/* Tautan hapus */
 .lk.d {
     color: var(--er)
 }
 
-/* Toast: pesan kecil yang muncul sebentar di bawah layar */
+/* Toast */
 #toast {
     position: fixed;
     bottom: calc(20px + env(safe-area-inset-bottom, 0px));
@@ -111,13 +111,13 @@ button.p {
     transition: opacity .2s
 }
 
-/* Kelas "s" ditambahkan lewat JS supaya toast terlihat */
+/* Toast tampil */
 #toast.s {
     opacity: 1
 }
 
 
-/* Pembungkus tabel supaya bisa digeser ke samping di HP */
+/* Tabel */
 .tw {
     overflow-x: auto
 }
@@ -142,7 +142,7 @@ th {
     font-weight: 700
 }
 
-/* Label status berbentuk pil (Direncanakan, Selesai, dst.) */
+/* Label status */
 .tag {
     display: inline-block;
     padding: 2px 10px;
@@ -153,7 +153,7 @@ th {
     color: var(--ac)
 }
 
-/* Warna teks label tergantung statusnya */
+/* Warna status */
 .tag.Selesai {
     color: var(--ok)
 }

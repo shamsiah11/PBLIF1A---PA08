@@ -1,4 +1,4 @@
-// dashboard.js: halaman Dashboard (kartu statistik dan agenda terdekat).
+// Dashboard
 
 function dashboard() {
   const t = today(), bln = t.slice(0, 7);

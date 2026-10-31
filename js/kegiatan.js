@@ -1,9 +1,9 @@
-// kegiatan.js: data kegiatan, halaman Kegiatan, form Tambah/Edit, simpan, hapus, dan pencarian di header.
+// Kegiatan
 
-// Daftar kategori. Kategori baru yang ditambahkan lewat form disimpan di browser (localStorage).
+// Kategori
 let KAT = (() => { try { const v = JSON.parse(localStorage.getItem("agenda_kategori")); if (Array.isArray(v) && v.length) return v } catch (e) { } return ["Rapat", "Seminar", "Sosial", "Pelatihan", "Lomba"] })();
 const saveKat = () => { try { localStorage.setItem("agenda_kategori", JSON.stringify(KAT)) } catch (e) { } };
-// Gabungan kategori tersimpan + kategori yang sudah dipakai kegiatan (tanpa duplikat)
+// Semua kategori
 const katAll = () => [...new Set([...KAT, ...data.map(d => d.kategori).filter(Boolean)])]; const STS = ["Direncanakan", "Berlangsung", "Selesai", "Batal"];
 const SEED = [
   { id: 1, nama: "Rapat Anggota", kategori: "Rapat", tanggal: "2026-10-12", lokasi: "Auditorium", status: "Selesai", pic: "Abas", peserta: 30, deskripsi: "Evaluasi program kerja semester ini." },

@@ -1,11 +1,11 @@
-// core.js: bagian inti yang dipakai semua halaman (peran, menu, fungsi bantu, pindah halaman).
-// File ini harus dimuat PALING PERTAMA di index.html.
+// Inti
+// Dimuat pertama
 
-let ROLE = "admin";                       // peran yang sedang login: "admin" atau "user"
+let ROLE = "admin";                       // peran
 const isAdmin = () => ROLE === "admin";
-const HALAMAN_USER = ["dashboard", "kegiatan"];   // halaman yang boleh dibuka user biasa
+const HALAMAN_USER = ["dashboard", "kegiatan"];   // halaman user
 const MENU = [["dashboard", "Dashboard"], ["kegiatan", "Kegiatan"], ["anggota", "Anggota"], ["peserta", "Peserta"], ["laporan", "Laporan"]];
-let view = "dashboard";                 // halaman yang sedang dibuka
+let view = "dashboard";                 // halaman aktif
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));

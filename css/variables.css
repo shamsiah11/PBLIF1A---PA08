@@ -1,26 +1,26 @@
-/* variables.css: variabel warna (tema terang dan gelap). */
+/* Variabel warna */
 
-/* Tema terang (default) */
+/* Tema terang */
 :root {
-    --bg: #f4f5f8;   /* warna latar halaman */
-    --sf: #fff;      /* warna permukaan: kartu, header, input */
-    --tx: #1b2433;   /* warna teks utama */
-    --mu: #64708a;   /* warna teks pelengkap (abu-abu) */
-    --ln: #dde1ea;   /* warna garis / border */
-    --ac: #2f43c9;   /* warna aksen (tombol utama, tautan) */
-    --ac2: #e8ebfb;  /* warna aksen versi lembut (latar label status) */
-    --ok: #1d7a4e;  /* hijau: status Selesai */
-    --wa: #a8620a;  /* oranye: status Berlangsung */
-    --er: #b3261e;  /* merah: error, Hapus, status Batal */
-    --sb: #16203a;   /* latar sidebar */
-    --sbt: #c9d0e4;  /* teks menu sidebar */
+    --bg: #f4f5f8;   /* latar */
+    --sf: #fff;      /* permukaan */
+    --tx: #1b2433;   /* teks */
+    --mu: #64708a;   /* teks abu */
+    --ln: #dde1ea;   /* garis */
+    --ac: #2f43c9;   /* aksen */
+    --ac2: #e8ebfb;  /* aksen lembut */
+    --ok: #1d7a4e;  /* hijau */
+    --wa: #a8620a;  /* oranye */
+    --er: #b3261e;  /* merah */
+    --sb: #16203a;   /* sidebar */
+    --sbt: #c9d0e4;  /* teks sidebar */
     box-sizing: border-box;
-    /* jarak aman untuk HP yang punya poni / bilah sistem */
+    /* jarak aman HP */
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px)
 }
 
-/* Tema gelap otomatis, mengikuti pengaturan perangkat */
+/* Tema gelap */
 @media(prefers-color-scheme:dark) {
     :root:not([data-theme="light"]) {
         --bg: #0f1523;
@@ -37,7 +37,7 @@
     }
 }
 
-/* Tema gelap manual (kalau halaman diberi data-theme="dark") */
+/* Tema gelap manual */
 :root[data-theme="dark"] {
     --bg: #0f1523;
     --sf: #182033;

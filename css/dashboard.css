@@ -1,6 +1,6 @@
-/* dashboard.css: kartu statistik (dipakai di Dashboard, Peserta, dan Laporan). */
+/* Statistik */
 
-/* Kumpulan kartu angka, otomatis menyesuaikan lebar layar */
+/* Kartu statistik */
 .stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -8,7 +8,7 @@
     margin-bottom: 20px
 }
 
-/* Angka besar di dalam kartu statistik */
+/* Angka */
 .stat b {
     display: block;
     font-size: 34px;
@@ -16,7 +16,7 @@
     margin-top: 4px
 }
 
-/* Keterangan kecil di atas angka */
+/* Keterangan */
 .stat span {
     color: var(--mu);
     font-size: 13px

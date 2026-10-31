@@ -1,51 +1,49 @@
-/* responsive.css: tampilan layar HP (720 px ke bawah), animasi, dan cetak. */
-/* File ini harus dimuat PALING TERAKHIR supaya bisa menimpa aturan lain. */
+/* Responsif (layar HP) */
+/* Dimuat terakhir */
 
 @media(max-width:720px) {
-    /* sidebar dan konten disusun atas-bawah */
+    /* atas-bawah */
     .layout {
         flex-direction: column
     }
 
-    /* tampilkan tombol garis tiga */
+    /* hamburger */
     .burger {
         display: flex
     }
 
-    /* menu disembunyikan sampai tombol ditekan */
+    /* sembunyikan menu */
     nav {
         display: none;
         width: 100%;
         padding: 8px
     }
 
-    /* saat <body> punya class "nav-open", menu tampil sebagai daftar vertikal */
+    /* menu terbuka */
     body.nav-open nav {
         display: block
     }
 
-    /* form jadi satu kolom */
+    /* satu kolom */
     .grid {
         grid-template-columns: 1fr
     }
 
-    /* jarak isi halaman dikecilkan agar muat di layar HP */
+    /* jarak kecil */
     main {
         padding: 16px
     }
 }
 
 
-/* Matikan animasi bagi pengguna yang mengaktifkan
-   "kurangi gerakan" di perangkatnya */
+/* Kurangi animasi */
 @media(prefers-reduced-motion:reduce) {
     * {
         transition: none !important
     }
 }
 
-/* Saat dicetak (halaman Laporan): sembunyikan header,
-   menu, dan semua tombol supaya yang tercetak hanya isinya */
+/* Cetak */
 @media print {
 
     header,

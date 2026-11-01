@@ -16,7 +16,7 @@ function load() { try { const s = localStorage.getItem("agenda_kegiatan"); if (s
 function save() { try { localStorage.setItem("agenda_kegiatan", JSON.stringify(data)) } catch (e) { } }
 function filtered() {
   const q = Q.toLowerCase();
-  return data.filter(x => (!F.kategori || x.kategori === F.kategori) && (!F.status || x.status === F.status) && (!F.bulan || x.tanggal.startsWith(F.bulan)) && (!F.pic || x.pic === F.pic) && (!q || (x.nama + x.lokasi + x.pic + x.kategori).toLowerCase().includes(q))).sort((a, b) => a.tanggal.localeCompare(b.tanggal));
+  return data.filter(x => (!F.kategori || x.kategori === F.kategori) && (!F.status || x.status === F.status) && (!F.bulan || x.tanggal.startsWith(F.bulan)) && (!F.pic || x.pic === F.pic) && (!q || (x.nama + x.kategori + x.tanggal + x.pic + x.status).toLowerCase().includes(q))).sort((a, b) => a.tanggal.localeCompare(b.tanggal));
 }
 function kegiatan() {
   const L = filtered(), per = 5, pages = Math.max(1, Math.ceil(L.length / per)); page = Math.min(page, pages);
@@ -35,7 +35,8 @@ $("#main").innerHTML = `<div class="row">
    <select aria-label="Status" onchange="F.status=this.value;page=1;kegiatan()">${opts(STS, F.status, "Status")}</select>
    <input type="month" aria-label="Bulan" value="${F.bulan}" onchange="F.bulan=this.value;page=1;kegiatan()">
    <select aria-label="PIC" onchange="F.pic=this.value;page=1;kegiatan()">${opts(pics, F.pic, "PIC")}</select></div>
-  <div class="card tw" style="padding:0">${rows.length ? `<table><tr><th>Nama kegiatan</th><th>Kategori</th><th>Tanggal</th><th>Waktu</th><th>Lokasi</th><th>PIC</th><th>Status</th>${isAdmin() ? "<th>Aksi</th>" : ""}</tr>
+  <div class="card tw" style="padding:0">${rows.length ? `<table><tr><th>Nama kegiatan</th><th>Kategori</th><th>Tanggal</th>
+<th>Jam Mulai</th><th>Jam Selesai</th><th>Lokasi</th>
 ${rows.map(x => `<tr>
 <td>
     <button class="nama-kegiatan" onclick="detailKegiatan(${x.id})">
@@ -104,8 +105,8 @@ function form() {
       <div><label for="kategori">Kategori</label><select id="kategori" onchange="$('#kbaru').hidden=this.value!=='__baru'">${opts(katAll(), x.kategori)}${!editId ? '<option value="__baru">+ Tambah kategori baru…</option>' : ''}</select>
        <input id="kbaru" hidden placeholder="Nama kategori baru" style="margin-top:8px"></div>
    <div><label for="tanggal">Tanggal</label><input id="tanggal" type="date" value="${x.tanggal}"></div>
-<input id="jamMulai" type="time" step="60" value="${x.jamMulai || ''}">
-<input id="jamSelesai" type="time" step="60" value="${x.jamSelesai || ''}">
+   <div><label for="jamMulai">Jam Mulai</label><input id="jamMulai" type="time" step="60" value="${x.jamMulai || ''}"></div>
+   <div><label for="jamSelesai">Jam Selesai</label><input id="jamSelesai" type="time" step="60" value="${x.jamSelesai || ''}"></div>
    <div><label for="lokasi">Lokasi</label><input id="lokasi" value="${esc(x.lokasi)}"></div>
    <div><label for="status">Status</label><select id="status">${opts(STS, x.status)}</select></div>
    <div><label for="pic">PIC</label><input id="pic" value="${esc(x.pic)}"></div>
@@ -118,10 +119,15 @@ function simpan() {
   const v = k => $("#" + k).value.trim();
  const o = { nama: v("nama"), kategori: v("kategori"), tanggal: v("tanggal"), jamMulai: v("jamMulai"), jamSelesai: v("jamSelesai"), lokasi: v("lokasi"), status: v("status"), pic: v("pic"), peserta: +v("peserta") || 0, deskripsi: v("deskripsi") };
  // Validasi waktu
-if (o.jamMulai && o.jamSelesai && o.jamSelesai <= o.jamMulai) {
-  alert("Jam selesai harus lebih besar dari jam mulai.");
+if (!o.jamMulai || !o.jamSelesai) {
+  $("#err").textContent = "Jam mulai dan jam selesai wajib diisi.";
   return;
-} 
+}
+
+if (o.jamSelesai <= o.jamMulai) {
+  $("#err").textContent = "Jam selesai harus lebih besar dari jam mulai.";
+  return;
+}
  if (o.kategori === "__baru") {
     const nk = v("kbaru");
     if (!nk) { $("#err").textContent = "Isi nama kategori baru, atau pilih kategori yang sudah ada."; return }

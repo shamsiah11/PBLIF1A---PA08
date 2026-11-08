@@ -138,8 +138,17 @@ function form() {
       <div><label for="kategori">Kategori</label><select id="kategori" onchange="$('#kbaru').hidden=this.value!=='__baru'">${opts(katAll(), x.kategori)}${!editId ? '<option value="__baru">+ Tambah kategori baru…</option>' : ''}</select>
        <input id="kbaru" hidden placeholder="Nama kategori baru" style="margin-top:8px"></div>
    <div><label for="tanggal">Tanggal</label><input id="tanggal" type="date" value="${x.tanggal}"></div>
-   <div><label for="jamMulai">Jam Mulai</label><input id="jamMulai" type="time" step="60" value="${x.jamMulai || ''}"></div>
-   <div><label for="jamSelesai">Jam Selesai</label><input id="jamSelesai" type="time" step="60" value="${x.jamSelesai || ''}"></div>
+   <div>
+  <label for="jamMulai">Jam Mulai</label>
+  <input id="jamMulai" type="time"
+         value="${x.jamMulai || ''}">
+</div>
+
+<div>
+  <label for="jamSelesai">Jam Selesai</label>
+  <input id="jamSelesai" type="time"
+         value="${x.jamSelesai || ''}">
+</div>
    <div><label for="lokasi">Lokasi</label><input id="lokasi" value="${esc(x.lokasi)}"></div>
    <div><label for="status">Status</label><select id="status">
   <option value="auto" ${x.status !== "Batal" ? "selected" : ""}>
@@ -166,7 +175,9 @@ function simpan() {
     status: v("status"),
     pic: v("pic"),
     peserta: +v("peserta") || 0,
-    deskripsi: v("deskripsi")
+    deskripsi: v("deskripsi"),
+    jamMulai: v("jamMulai"),
+    jamSelesai: v("jamSelesai")
   };
 
   if (o.kategori === "__baru") {

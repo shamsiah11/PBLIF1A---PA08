@@ -117,32 +117,71 @@ function form() {
 }
 function simpan() {
   const v = k => $("#" + k).value.trim();
- const o = { nama: v("nama"), kategori: v("kategori"), tanggal: v("tanggal"), jamMulai: v("jamMulai"), jamSelesai: v("jamSelesai"), lokasi: v("lokasi"), status: v("status"), pic: v("pic"), peserta: +v("peserta") || 0, deskripsi: v("deskripsi") };
- // Validasi waktu
-if (!o.jamMulai || !o.jamSelesai) {
-  $("#err").textContent = "Jam mulai dan jam selesai wajib diisi.";
-  return;
-}
 
-if (o.jamSelesai <= o.jamMulai) {
-  $("#err").textContent = "Jam selesai harus lebih besar dari jam mulai.";
-  return;
-}
- if (o.kategori === "__baru") {
+  const o = {
+    nama: v("nama"),
+    kategori: v("kategori"),
+    tanggal: v("tanggal"),
+    lokasi: v("lokasi"),
+    status: v("status"),
+    pic: v("pic"),
+    peserta: +v("peserta") || 0,
+    deskripsi: v("deskripsi")
+  };
+
+  if (o.kategori === "__baru") {
     const nk = v("kbaru");
-    if (!nk) { $("#err").textContent = "Isi nama kategori baru, atau pilih kategori yang sudah ada."; return }
-    const ada = katAll().find(k => k.toLowerCase() === nk.toLowerCase());
+
+    if (!nk) {
+      $("#err").textContent = "Isi nama kategori baru.";
+      return;
+    }
+
+    const ada = katAll().find(
+      k => k.toLowerCase() === nk.toLowerCase()
+    );
+
     o.kategori = ada || nk;
-    if (!ada) { KAT.push(nk); saveKat() }
+
+    if (!ada) {
+      KAT.push(nk);
+      saveKat();
+    }
   }
-  if (editId) { Object.assign(data.find(d => d.id === editId), o) } else { data.push({ id: Date.now(), ...o }) }
-  save(); toast(editId ? "Kegiatan diperbarui" : "Kegiatan ditambahkan"); go("kegiatan");
+
+  const sedangEdit = !!editId;
+
+  if (sedangEdit) {
+    Object.assign(data.find(d => d.id === editId), o);
+  } else {
+    data.push({ id: Date.now(), ...o });
+  }
+
+  catatAktivitas(
+    sedangEdit ? "Mengubah kegiatan" : "Menambahkan kegiatan",
+    o.nama
+  );
+
+  save();
+  toast(sedangEdit ? "Kegiatan diperbarui" : "Kegiatan ditambahkan");
+  go("kegiatan");
 }
 function hapus(id) {
   const x = data.find(d => d.id === id);
-  if (confirm(`Hapus kegiatan “${x.nama}”?`)) { data = data.filter(d => d.id !== id); delete hadir[id]; saveH(); save(); toast("Kegiatan dihapus"); kegiatan() }
+
+  if (confirm(`Hapus kegiatan “${x.nama}”?`)) {
+    catatAktivitas("Menghapus kegiatan", x.nama);
+
+    data = data.filter(d => d.id !== id);
+    delete hadir[id];
+
+    saveH();
+    save();
+
+    toast("Kegiatan dihapus");
+    kegiatan();
+  }
 }
-$("#q").addEventListener("input", e => { Q = e.target.value; if (view !== "kegiatan") { view = "kegiatan"; render() } page = 1; kegiatan(); });
 
 // Menampilkan daftar kategori
 function kelolaKategori() {

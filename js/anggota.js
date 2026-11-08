@@ -27,13 +27,58 @@ function aList() {
   $("#al").innerHTML = L.length ? `<table><tr><th>Nama</th><th>Jabatan</th><th>No. HP</th><th>Aksi</th></tr>${L.map(a => `<tr><td>${esc(a.nama)}<br><span class="mu">${esc(a.nim)}</span></td><td>${esc(a.jabatan)}</td><td>${esc(a.hp) || "-"}</td><td><button class="lk" onclick="aEdit=${a.id};anggota();$('#an').focus()">Edit</button> | <button class="lk d" onclick="aDel(${a.id})">Hapus</button></td></tr>`).join("")}</table>` : `<div class="empty">Anggota tidak ditemukan. Ubah pencarian atau tambahkan anggota baru.</div>`;
 }
 function aSave() {
-  const v = k => $("#" + k).value.trim(), o = { nama: v("an"), nim: v("ani"), jabatan: v("ajb"), hp: v("ahp") };
-  if (!o.nama || !o.nim || !o.jabatan) { $("#aerr").textContent = "Isi nama lengkap, NIM, dan jabatan sebelum menyimpan."; return }
-  if (AG.some(a => a.nim === o.nim && a.id !== aEdit)) { $("#aerr").textContent = "NIM sudah terdaftar. Periksa kembali NIM yang dimasukkan."; return }
-  if (aEdit) Object.assign(AG.find(a => a.id === aEdit), o); else AG.push({ id: Date.now(), ...o });
-  saveA(); toast(aEdit ? "Anggota diperbarui" : "Anggota ditambahkan"); aEdit = null; anggota();
+  const v = k => $("#" + k).value.trim();
+
+  const o = {
+    nama: v("an"),
+    nim: v("ani"),
+    jabatan: v("ajb"),
+    hp: v("ahp")
+  };
+
+  if (!o.nama || !o.nim || !o.jabatan) {
+    $("#aerr").textContent = "Isi nama, NIM, dan jabatan.";
+    return;
+  }
+
+  if (AG.some(a => a.nim === o.nim && a.id !== aEdit)) {
+    $("#aerr").textContent = "NIM sudah terdaftar.";
+    return;
+  }
+
+  const sedangEdit = !!aEdit;
+
+  if (sedangEdit) {
+    Object.assign(AG.find(a => a.id === aEdit), o);
+  } else {
+    AG.push({ id: Date.now(), ...o });
+  }
+
+  catatAktivitas(
+    sedangEdit ? "Mengubah anggota" : "Menambahkan anggota",
+    o.nama
+  );
+
+  saveA();
+  toast(sedangEdit ? "Anggota diperbarui" : "Anggota ditambahkan");
+
+  aEdit = null;
+  anggota();
 }
 function aDel(id) {
   const a = AG.find(x => x.id === id);
-  if (confirm(`Hapus anggota “${a.nama}”?`)) { AG = AG.filter(x => x.id !== id); Object.values(hadir).forEach(o => delete o[id]); saveA(); saveH(); toast("Anggota dihapus"); anggota() }
+
+  if (confirm(`Hapus anggota “${a.nama}”?`)) {
+    catatAktivitas("Menghapus anggota", a.nama);
+
+    AG = AG.filter(x => x.id !== id);
+
+    Object.values(hadir).forEach(o => delete o[id]);
+
+    saveA();
+    saveH();
+
+    toast("Anggota dihapus");
+    anggota();
+  }
 }

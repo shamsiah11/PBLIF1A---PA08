@@ -25,3 +25,26 @@ function kosong() {
   const m = MENU.find(m => m[0] === view)[1];
   $("#main").innerHTML = `<h2>${m}</h2><div class="card empty">Halaman ${m} belum tersedia. Mulai dari menu Kegiatan untuk mengelola agenda.</div>`;
 }
+
+// riwayat aktivitas
+function catatAktivitas(aksi, detail) {
+  const riwayat = ld("agenda_riwayat", []);
+
+  const aktivitas = {
+    aksi: aksi,
+    detail: detail,
+    pelaku: $("#uname")?.textContent.trim() || "Pengguna",
+    waktu: new Date().toISOString()
+  };
+
+  riwayat.unshift(aktivitas);
+
+  try {
+    localStorage.setItem(
+      "agenda_riwayat",
+      JSON.stringify(riwayat.slice(0, 200))
+    );
+  } catch (e) {
+    console.error("Riwayat aktivitas gagal disimpan", e);
+  }
+}

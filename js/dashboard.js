@@ -1,13 +1,78 @@
-// Dashboard
-
 function dashboard() {
   const t = today(), bln = t.slice(0, 7);
-  const upc = data.filter(x => x.tanggal >= t && x.status !== "Batal").sort((a, b) => a.tanggal.localeCompare(b.tanggal)).slice(0, 5);
+
+  const upc = data.filter(x => x.tanggal >= t && x.status !== "Batal")
+    .sort((a, b) => a.tanggal.localeCompare(b.tanggal))
+    .slice(0, 5);
+
+  const riwayat = ld("agenda_riwayat", []);
+
   $("#main").innerHTML = `<h2>Dashboard</h2>
+
   <div class="stats">
-   <div class="card stat"><span>Jumlah kegiatan bulan ini</span><b>${data.filter(x => x.tanggal.startsWith(bln)).length}</b></div>
-   <div class="card stat"><span>Peserta terdaftar</span><b>${data.reduce((a, x) => a + pc(x), 0)}</b></div>
-   <div class="card stat"><span>Kegiatan selesai</span><b>${data.filter(x => x.status === "Selesai").length}</b></div></div>
-  <div class="card"><div class="row"><h3>Agenda terdekat</h3><button class="b" onclick="go('kegiatan')">Lihat semua</button></div>
-  <div class="tw">${upc.length ? `<table><tr><th>Tanggal</th><th>Kegiatan</th><th>Lokasi</th></tr>${upc.map(x => `<tr><td>${tgl(x.tanggal)}</td><td>${esc(x.nama)}</td><td>${esc(x.lokasi)}</td></tr>`).join("")}</table>` : `<div class="empty">Belum ada agenda mendatang. Tambahkan kegiatan baru di menu Kegiatan.</div>`}</div></div>`;
+    <div class="card stat">
+      <span>Jumlah kegiatan bulan ini</span>
+      <b>${data.filter(x => x.tanggal.startsWith(bln)).length}</b>
+    </div>
+    <div class="card stat">
+      <span>Peserta terdaftar</span>
+      <b>${data.reduce((a, x) => a + pc(x), 0)}</b>
+    </div>
+    <div class="card stat">
+      <span>Kegiatan selesai</span>
+      <b>${data.filter(x => x.status === "Selesai").length}</b>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <h3>Agenda terdekat</h3>
+      <button class="b" onclick="go('kegiatan')">Lihat semua</button>
+    </div>
+
+    <div class="tw">
+      ${upc.length ? `
+        <table>
+          <tr>
+            <th>Tanggal</th>
+            <th>Kegiatan</th>
+            <th>Lokasi</th>
+          </tr>
+          ${upc.map(x => `
+            <tr>
+              <td>${tgl(x.tanggal)}</td>
+              <td>${esc(x.nama)}</td>
+              <td>${esc(x.lokasi)}</td>
+            </tr>
+          `).join("")}
+        </table>
+      ` : `<div class="empty">Belum ada agenda mendatang.</div>`}
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="row">
+      <h3>Aktivitas Terbaru</h3>
+      <span class="mu">${riwayat.length} aktivitas</span>
+    </div>
+
+    ${riwayat.length ? `
+      <div style="max-height:300px;overflow-y:auto">
+        ${riwayat.map(x => `
+          <div style="padding:12px 0;border-bottom:1px solid var(--bd)">
+            <b>${esc(x.aksi)}</b>
+            <div>${esc(x.detail)}</div>
+            <small class="mu">
+              ${esc(x.pelaku)} •
+              ${new Date(x.waktu).toLocaleString("id-ID")}
+            </small>
+          </div>
+        `).join("")}
+      </div>
+    ` : `
+      <div class="empty">
+        Belum ada aktivitas yang tercatat.
+      </div>
+    `}
+  </div>`;
 }

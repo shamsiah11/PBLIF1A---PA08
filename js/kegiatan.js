@@ -69,7 +69,7 @@ function kegiatan() {
    <input type="month" aria-label="Bulan" value="${F.bulan}" onchange="F.bulan=this.value;page=1;kegiatan()">
    <select aria-label="PIC" onchange="F.pic=this.value;page=1;kegiatan()">${opts(pics, F.pic, "PIC")}</select></div>
   <div class="card tw" style="padding:0">${rows.length ? `<table><tr><th>Nama kegiatan</th><th>Kategori</th><th>Tanggal</th>
-<th>Jam Mulai</th><th>Jam Selesai</th><th>Lokasi</th>
+<th>Waktu</th><th>Lokasi</th><th>PIC</th><th>Status</th><th>Aksi</th></tr>
 ${rows.map(x => `<tr>
 <td>
     <button class="nama-kegiatan" onclick="detailKegiatan(${x.id})">

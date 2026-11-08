@@ -1,4 +1,5 @@
 function dashboard() {
+  updateStatusOtomatis();
   const t = today(), bln = t.slice(0, 7);
 
   const upc = data.filter(x => x.tanggal >= t && x.status !== "Batal")

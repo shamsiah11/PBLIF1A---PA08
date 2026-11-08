@@ -12,6 +12,38 @@ const SEED = [
   { id: 4, nama: "Bakti Sosial", kategori: "Sosial", tanggal: "2026-11-01", lokasi: "Desa", status: "Direncanakan", pic: "Cici", peserta: 6, deskripsi: "Kegiatan bakti sosial bersama warga." },
   { id: 5, nama: "Pelatihan", kategori: "Pelatihan", tanggal: "2026-11-02", lokasi: "Auditorium", status: "Direncanakan", pic: "Bibu", peserta: 0, deskripsi: "Pelatihan kepemimpinan pengurus baru." }];
 let data = load(), editId = null, page = 1, F = { kategori: "", status: "", bulan: "", pic: "" }, Q = "";
+// Mengubah status kegiatan secara otomatis
+function updateStatusOtomatis() {
+  const sekarang = new Date();
+  const t = [
+    sekarang.getFullYear(),
+    String(sekarang.getMonth() + 1).padStart(2, "0"),
+    String(sekarang.getDate()).padStart(2, "0")
+  ].join("-");
+
+  let berubah = false;
+
+  data.forEach(x => {
+    if (x.status === "Batal") return;
+
+    let statusBaru;
+
+    if (x.tanggal > t) {
+      statusBaru = "Direncanakan";
+    } else if (x.tanggal === t) {
+      statusBaru = "Berlangsung";
+    } else {
+      statusBaru = "Selesai";
+    }
+
+    if (x.status !== statusBaru) {
+      x.status = statusBaru;
+      berubah = true;
+    }
+  });
+
+  if (berubah) save();
+}
 function load() { try { const s = localStorage.getItem("agenda_kegiatan"); if (s) return JSON.parse(s) } catch (e) { } return SEED.map(x => ({ ...x })) }
 function save() { try { localStorage.setItem("agenda_kegiatan", JSON.stringify(data)) } catch (e) { } }
 function filtered() {
@@ -19,9 +51,10 @@ function filtered() {
   return data.filter(x => (!F.kategori || x.kategori === F.kategori) && (!F.status || x.status === F.status) && (!F.bulan || x.tanggal.startsWith(F.bulan)) && (!F.pic || x.pic === F.pic) && (!q || (x.nama + x.kategori + x.tanggal + x.pic + x.status).toLowerCase().includes(q))).sort((a, b) => a.tanggal.localeCompare(b.tanggal));
 }
 function kegiatan() {
+  updateStatusOtomatis();
   const L = filtered(), per = 5, pages = Math.max(1, Math.ceil(L.length / per)); page = Math.min(page, pages);
   const rows = L.slice((page - 1) * per, page * per), pics = [...new Set(data.map(x => x.pic))];
-$("#main").innerHTML = `<div class="row">
+  $("#main").innerHTML = `<div class="row">
   <h2 style="margin:0">Data Kegiatan</h2>
   ${isAdmin() ? `
     <div class="act">
@@ -53,10 +86,10 @@ ${rows.map(x => `<tr>
   <button class="b" ${page >= pages ? "disabled" : ""} onclick="page++;kegiatan()">&gt;</button></div>`;
 }
 function detailKegiatan(id) {
-    const x = data.find(d => d.id === id);
-    if (!x) return;
+  const x = data.find(d => d.id === id);
+  if (!x) return;
 
-    document.body.insertAdjacentHTML("beforeend", `
+  document.body.insertAdjacentHTML("beforeend", `
         <div class="detail-overlay" id="detailModal"
              onclick="if(event.target === this) tutupDetail()">
 
@@ -95,7 +128,7 @@ function detailKegiatan(id) {
 }
 
 function tutupDetail() {
-    document.getElementById("detailModal")?.remove();
+  document.getElementById("detailModal")?.remove();
 }
 function form() {
   const x = data.find(d => d.id === editId) || { nama: "", kategori: "Rapat", tanggal: today(), lokasi: "", status: "Direncanakan", pic: "", peserta: 0, deskripsi: "" };
@@ -108,7 +141,14 @@ function form() {
    <div><label for="jamMulai">Jam Mulai</label><input id="jamMulai" type="time" step="60" value="${x.jamMulai || ''}"></div>
    <div><label for="jamSelesai">Jam Selesai</label><input id="jamSelesai" type="time" step="60" value="${x.jamSelesai || ''}"></div>
    <div><label for="lokasi">Lokasi</label><input id="lokasi" value="${esc(x.lokasi)}"></div>
-   <div><label for="status">Status</label><select id="status">${opts(STS, x.status)}</select></div>
+   <div><label for="status">Status</label><select id="status">
+  <option value="auto" ${x.status !== "Batal" ? "selected" : ""}>
+    Otomatis berdasarkan tanggal
+  </option>
+  <option value="Batal" ${x.status === "Batal" ? "selected" : ""}>
+    Batal
+  </option>
+</select></div>
    <div><label for="pic">PIC</label><input id="pic" value="${esc(x.pic)}"></div>
    <div><label for="peserta">Jumlah peserta</label><input id="peserta" type="number" min="0" value="${x.peserta}"></div>
    <div class="full"><label for="deskripsi">Deskripsi</label><textarea id="deskripsi" rows="5">${esc(x.deskripsi)}</textarea></div></div>
@@ -163,6 +203,7 @@ function simpan() {
   );
 
   save();
+  updateStatusOtomatis();
   toast(sedangEdit ? "Kegiatan diperbarui" : "Kegiatan ditambahkan");
   go("kegiatan");
 }

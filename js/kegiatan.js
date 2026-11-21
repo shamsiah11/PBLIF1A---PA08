@@ -53,7 +53,7 @@ function filtered() {
 function kegiatan() {
   updateStatusOtomatis();
   const L = filtered(), per = 5, pages = Math.max(1, Math.ceil(L.length / per)); page = Math.min(page, pages);
-  const rows = L.slice((page - 1) * per, page * per), pics = [...new Set(data.map(x => x.pic))];
+  const rows = L.slice((page - 1) * per, page * per), pics = [...new Set(data.map(x => x.pic).filter(p => p && p.trim()))];
   $("#main").innerHTML = `<div class="row">
   <h2 style="margin:0">Data Kegiatan</h2>
   ${isAdmin() ? `
@@ -67,7 +67,7 @@ function kegiatan() {
    <select aria-label="Kategori" onchange="F.kategori=this.value;page=1;kegiatan()">${opts(katAll(), F.kategori, "Kategori")}</select>
    <select aria-label="Status" onchange="F.status=this.value;page=1;kegiatan()">${opts(STS, F.status, "Status")}</select>
    <input type="month" aria-label="Bulan" value="${F.bulan}" onchange="F.bulan=this.value;page=1;kegiatan()">
-   <select aria-label="PIC" onchange="F.pic=this.value;page=1;kegiatan()">${opts(pics, F.pic, "PIC")}</select></div>
+<select aria-label="PIC" onchange="F.pic=this.value;page=1;kegiatan()"><option value="" ${!F.pic ? "selected" : ""}>PIC</option>${pics.map(p => `<option value="${esc(p)}" ${F.pic === p ? "selected" : ""}>${esc(p)}</option>`).join("")}</select></div>
   <div class="card tw" style="padding:0">${rows.length ? `<table><tr><th>Nama kegiatan</th><th>Kategori</th><th>Tanggal</th>
 <th>Waktu</th><th>Lokasi</th><th>PIC</th><th>Status</th><th>Aksi</th></tr>
 ${rows.map(x => `<tr>

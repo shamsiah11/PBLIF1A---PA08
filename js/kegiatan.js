@@ -135,7 +135,7 @@ function form() {
   $("#main").innerHTML = `<h2>${editId ? "Edit" : "Tambah"} kegiatan</h2>
   <div class="card"><div class="grid" id="f">
    <div><label for="nama">Nama kegiatan</label><input id="nama" value="${esc(x.nama)}"></div>
-      <div><label for="kategori">Kategori</label><select id="kategori" onchange="$('#kbaru').hidden=this.value!=='__baru'">${opts(katAll(), x.kategori)}${!editId ? '<option value="__baru">+ Tambah kategori baru…</option>' : ''}</select>
+      <div><label for="kategori">Kategori</label><select id="kategori"> ${opts(katAll(), x.kategori)}</select></div>
        <input id="kbaru" hidden placeholder="Nama kategori baru" style="margin-top:8px"></div>
    <div><label for="tanggal">Tanggal</label><input id="tanggal" type="date" value="${x.tanggal}"></div>
    <div>
@@ -164,6 +164,7 @@ function form() {
    <div id="err" class="mu" style="color:var(--er);margin-top:10px"></div>
    <div class="act"><button class="b" onclick="go('kegiatan')">Batal</button><button class="b p" onclick="simpan()">Simpan</button></div></div>`;
 }
+
 function simpan() {
   const v = k => $("#" + k).value.trim();
 
